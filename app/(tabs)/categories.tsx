@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { useRouter } from 'expo-router';
+import { formatIndianMoney } from '@utils/indianMoneyFormat';
 
 // Dynamic data fetching simulation
 const fetchCategories = () => [
@@ -153,9 +154,26 @@ const CategoryPage = () => {
                 {/********* Right sidebar *********/}
                 <View className="w-[80%]">
                 {loading ? (
-                    <View className="flex-1 items-center justify-center">
-                    <ActivityIndicator size="large" />
-                    </View>
+                    <ScrollView className="p-4">
+                        <View className="flex-row flex-wrap justify-between gap-4">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <View
+                            key={index}
+                            className="bg-white dark:bg-gray-800 w-[47%] rounded-lg overflow-hidden mb-4 border border-gray-100 dark:border-gray-700 animate-pulse"
+                            >
+                            {/* Image Placeholder */}
+                            <View className="aspect-square bg-gray-200 dark:bg-gray-700 rounded-t-lg" />
+
+                            {/* Content Placeholder */}
+                            <View className="p-3 space-y-2">
+                                <View className="h-3 w-3/4 bg-gray-300 dark:bg-gray-600 rounded" />
+                                <View className="h-3 w-1/2 bg-gray-300 dark:bg-gray-600 rounded" />
+                                <View className="h-8 w-full bg-gray-300 dark:bg-gray-700 rounded-full mt-2" />
+                            </View>
+                            </View>
+                        ))}
+                        </View>
+                    </ScrollView>
                 ) : (
                     <ScrollView className="p-4">
                         <View className="flex-row flex-wrap justify-between gap-4">
@@ -194,15 +212,15 @@ const CategoryPage = () => {
 
                                     {/* Pricing */}
                                     <View className="flex-row items-center gap-2 mb-2">
-                                    <Text className="text-base font-bold text-gray-900 dark:text-white">
-                                        ₹{product.price}
-                                    </Text>
-                                    <Text className="text-xs text-gray-500 dark:text-gray-400 line-through">
-                                        ₹{product.mrp}
-                                    </Text>
-                                    <Text className="text-xs text-green-600 dark:text-green-400">
-                                        {product.discount}% off
-                                    </Text>
+                                        <Text className="text-base font-bold text-gray-900 dark:text-white">
+                                            {formatIndianMoney(product.price)}
+                                        </Text>
+                                        <Text className="text-xs text-gray-500 dark:text-gray-400 line-through">
+                                            {formatIndianMoney(product.mrp)}
+                                        </Text>
+                                        <Text className="text-xs text-green-600 dark:text-green-400">
+                                            {product.discount}% off
+                                        </Text>
                                     </View>
 
                                     {/* Add Button */}
