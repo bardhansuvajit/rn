@@ -13,7 +13,7 @@ interface TabBarIconProps {
 
 const TabBarIcon = ({ focused, activeXml, inactiveXml }: TabBarIconProps) => {
     const { colorScheme } = useColorScheme()
-    const activeColor = colorScheme === 'dark' ? colors.red[700] : colors.red[500]
+    const activeColor = colorScheme === 'dark' ? colors.green[700] : colors.green[500]
     const inactiveColor = colors.gray[400]
 
     return (
@@ -34,7 +34,7 @@ export default function Layout() {
     <View className="flex-1 bg-white dark:bg-gray-900">
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: isDark ? colors.red[700] : colors.red[500],
+          tabBarActiveTintColor: isDark ? colors.green[700] : colors.green[500],
           tabBarInactiveTintColor: colors.gray[400],
           tabBarLabelStyle: {
             fontSize: 10,

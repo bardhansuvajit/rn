@@ -6,7 +6,7 @@ import Onboarding from '../components/Onboarding';
 
 SplashScreen.preventAutoHideAsync();
 
-// const FORCE_ONBOARDING = 'true';
+const FORCE_ONBOARDING = 'true';
 
 export default function RootLayout() {
     const [isFirstLaunch, setIsFirstLaunch] = useState<boolean | null>(null);
@@ -15,7 +15,7 @@ export default function RootLayout() {
     useEffect(() => {
         const init = async () => {
             try {
-                // if (FORCE_ONBOARDING) return setIsFirstLaunch(true);
+                if (FORCE_ONBOARDING) return setIsFirstLaunch(true);
 
                 const flag = await AsyncStorage.getItem('@proj1/isFirstLaunch');
                 if (flag === null) {
@@ -25,7 +25,7 @@ export default function RootLayout() {
                     setIsFirstLaunch(false);
                 }
             } catch (e) {
-                console.error('First‑launch check failed:', e);
+                console.error('First-launch check failed:', e);
                 setIsFirstLaunch(false);
             }
         };
