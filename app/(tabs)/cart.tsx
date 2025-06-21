@@ -25,12 +25,14 @@ type CartItem = {
 };
 
 const Cart = () => {
-  const { colorScheme } = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const [loading, setLoading] = useState(true);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [savedItems, setSavedItems] = useState<CartItem[]>([]);
-  const router = useRouter();
+    const userLoggedIn = false;
+    const hasAddress = false;
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+    const [loading, setLoading] = useState(true);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [savedItems, setSavedItems] = useState<CartItem[]>([]);
+    const router = useRouter();
 
   // Simulate loading data
   useEffect(() => {
@@ -348,6 +350,32 @@ const Cart = () => {
                 </View>
             )}
 
+            {/* Order Summary */}
+            {cartItems.length > 0 && (
+                <>
+                    <View className="mt-6 p-3 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <Text className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Order Summary</Text>
+
+                        <View className="flex-row justify-between mb-2">
+                            <Text className="text-gray-600 dark:text-gray-300 text-xs">Subtotal</Text>
+                            <Text className="text-gray-900 dark:text-white text-xs">{formatIndianMoney(subtotal)}</Text>
+                        </View>
+
+                        <View className="flex-row justify-between mb-2">
+                            <Text className="text-gray-600 dark:text-gray-300 text-xs">Delivery</Text>
+                            <Text className="text-gray-900 dark:text-white text-xs">{formatIndianMoney(shipping)}</Text>
+                        </View>
+
+                        <View className="h-px bg-gray-200 dark:bg-gray-700 my-3" />
+
+                        <View className="flex-row justify-between">
+                            <Text className="text-lg font-bold text-gray-900 dark:text-white">Total</Text>
+                            <Text className="text-lg font-bold text-gray-900 dark:text-white">{formatIndianMoney(total)}</Text>
+                        </View>
+                    </View>
+                </>
+            )}
+
             {/* Saved Items */}
             {savedItems.length > 0 && (
               <FlatList
@@ -356,37 +384,25 @@ const Cart = () => {
                 renderItem={renderSavedItem}
                 scrollEnabled={false}
                 ListHeaderComponent={
-                  <Text className="text-lg font-bold mb-4 mt-6 text-gray-900 dark:text-white">
+                  <Text className="text-sm font-bold mb-4 mt-6 text-gray-900 dark:text-white">
                     Saved for Later
                   </Text>
                 }
               />
             )}
 
-            {/* Order Summary with Tailwind gradient */}
+            {/* Cancellation */}
             {cartItems.length > 0 && (
-                <View className="mt-6 p-3 bg-white dark:bg-gray-800 rounded-xl shadow-sm">
-                    <Text className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Order Summary</Text>
-                    
-                    <View className="flex-row justify-between mb-2">
-                        <Text className="text-gray-600 dark:text-gray-300 text-xs">Subtotal</Text>
-                        <Text className="text-gray-900 dark:text-white text-xs">{formatIndianMoney(subtotal)}</Text>
+                <>
+                    <View className="mt-4 p-3 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <Text className="text-sm font-bold text-gray-900 dark:text-white mb-2">
+                            Cancellation Policy
+                        </Text>
+                        <Text className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Orders can be cancelled any time before they are packed. A full refund will be initiated to your original payment method instantly after cancellation.
+                        </Text>
                     </View>
-                    
-                    <View className="flex-row justify-between mb-2">
-                        <Text className="text-gray-600 dark:text-gray-300 text-xs">Delivery</Text>
-                        <Text className="text-gray-900 dark:text-white text-xs">{formatIndianMoney(shipping)}</Text>
-                    </View>
-                    
-                    <View className="h-px bg-gray-200 dark:bg-gray-700 my-3" />
-                    
-                    <View className="flex-row justify-between">
-                        <Text className="text-lg font-bold text-gray-900 dark:text-white">Total</Text>
-                        <Text className="text-lg font-bold text-gray-900 dark:text-white">{formatIndianMoney(total)}</Text>
-                    </View>
-
-                    
-                </View>
+                </>
             )}
           </>
         )}
@@ -396,19 +412,56 @@ const Cart = () => {
       {/* Checkout Button */}
       {cartItems.length > 0 && (
         <View className="absolute bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 shadow-sm">
-            <Text className="dark:text-gray-400 text-xs mb-3 text-center">
-                Let&apos;s make sure we know where to send your order. Please add a delivery address.
-            </Text>
-            <TouchableOpacity 
-                className={`w-full py-3 rounded-xl items-center ${
-                isDark ? 'bg-primary-700' : 'bg-primary-600'
-                }`}
-                onPress={() => console.log('Proceed to Checkout')}
-            >
-                <Text className="text-white font-bold text-lg">
-                    Add Delivery address
-                </Text>
-            </TouchableOpacity>
+            {(() => {
+                // Branch 1 – user must sign in
+                if (!userLoggedIn) {
+                return (
+                    <>
+                        <Text className="dark:text-gray-400 text-xs mb-3 text-center">
+                            Welcome! Please sign in so we can get your order started.
+                        </Text>
+                        <TouchableOpacity
+                            className={`w-full py-3 rounded-xl items-center ${isDark ? 'bg-primary-700' : 'bg-primary-600'}`}
+                            onPress={() => console.log('Open Sign-In')}
+                        >
+                            <Text className="text-white font-bold text-lg">Sign in to continue</Text>
+                        </TouchableOpacity>
+                    </>
+                );
+                }
+
+                // Branch 2 – user logged in but no address
+                if (!hasAddress) {
+                return (
+                    <>
+                        <Text className="dark:text-gray-400 text-xs mb-3 text-center">
+                            Let&apos;s make sure we know where to send your order. Please add a delivery address.
+                        </Text>
+                        <TouchableOpacity
+                            className={`w-full py-3 rounded-xl items-center ${isDark ? 'bg-primary-700' : 'bg-primary-600'}`}
+                            onPress={() => console.log('Add Address')}
+                        >
+                            <Text className="text-white font-bold text-lg">Add Delivery Address</Text>
+                        </TouchableOpacity>
+                    </>
+                );
+                }
+
+                // Branch 3 – everything is fine, show checkout
+                return (
+                    <>
+                        <Text className="dark:text-gray-400 text-xs mb-3 text-center">
+                            You're almost there! Tap below to place your order.
+                        </Text>
+                        <TouchableOpacity
+                            className={`w-full py-3 rounded-xl items-center ${isDark ? 'bg-primary-700' : 'bg-primary-600'}`}
+                            onPress={() => console.log('Add Address')}
+                        >
+                            <Text className="text-white font-bold text-lg">Proceed to Checkout</Text>
+                        </TouchableOpacity>
+                    </>
+                );
+            })()}
         </View>
       )}
     </SafeAreaView>
