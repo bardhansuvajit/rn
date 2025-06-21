@@ -14,9 +14,9 @@ import { useState } from 'react';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const slides = [
-  { id: 1, image: require('../assets/images/onboarding/onboarding1.png'), color: '#4CAF50' },
-  { id: 2, image: require('../assets/images/onboarding/onboarding2.png'), color: '#3DF7D6' },
-  { id: 3, image: require('../assets/images/onboarding/onboarding3.png'), color: '#66B9EB' },
+    { id: 1, image: require('../assets/images/onboarding/onboarding1.png'), color: '#4CAF50' },
+    { id: 2, image: require('../assets/images/onboarding/onboarding2.png'), color: '#3DF7D6' },
+    { id: 3, image: require('../assets/images/onboarding/onboarding3.png'), color: '#66B9EB' },
 ];
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
