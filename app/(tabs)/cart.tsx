@@ -422,7 +422,8 @@ const Cart = () => {
                         </Text>
                         <TouchableOpacity
                             className={`w-full py-3 rounded-xl items-center ${isDark ? 'bg-primary-700' : 'bg-primary-600'}`}
-                            onPress={() => console.log('Open Sign-In')}
+                            // onPress={() => console.log('Open Sign-In')}
+                            onPress={() => router.push(`/profile`)}
                         >
                             <Text className="text-white font-bold text-lg">Sign in to continue</Text>
                         </TouchableOpacity>

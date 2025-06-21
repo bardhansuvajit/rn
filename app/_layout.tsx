@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import './globals.css';
 import { useEffect, useState, useRef } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
